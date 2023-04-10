@@ -1516,7 +1516,6 @@
 		"dev": "webpack --progress",
 		"build": "webpack --progress --mode=production",
 		"vscode:prepublish": "npm run build",
-		"vscode:uninstall": "node ./out/life-cycle/uninstall.js",
 		"pub": "vsce publish --no-dependencies",
 		"package": "vsce package --no-dependencies",
 		"package-and-install": "npm run package && node ./.vscode/install-package.js"
