@@ -91,7 +91,7 @@ export class GitGraphView extends Disposable {
 		const config = getConfig();
 		const title = fileUri?.fsPath ? `Git History(${path.basename(fileUri.fsPath)})` : 'Git History';
 		const activePath = vscode.window.activeTextEditor?.document?.uri?.fsPath;
-		if (fileUri && activePath == fileUri?.fsPath) {
+		if (fileUri && activePath && activePath == fileUri?.fsPath) {
 			column = vscode.ViewColumn.Two
 		}
 		this.panel = vscode.window.createWebviewPanel('git-graph', title, {
