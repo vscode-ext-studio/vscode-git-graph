@@ -158,7 +158,7 @@ export class GitGraphView extends Disposable {
 
 			// Respond to messages sent from the Webview
 			this.panel.webview.onDidReceiveMessage((msg) => {
-				if (ace) {
+				if (ace && ace.viewColumn != column) {
 					vscode.window.showTextDocument(ace.document)
 					ace = null;
 				}
