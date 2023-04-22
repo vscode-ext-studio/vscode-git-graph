@@ -1,7 +1,7 @@
 {
 	"name": "git-graph-history3",
 	"displayName": "GH",
-	"version": "2.3.0",
+	"version": "2.3.1",
 	"publisher": "cweijan",
 	"author": {
 		"name": "Weijan Chen",
@@ -1517,8 +1517,7 @@
 		"build": "webpack --progress --mode=production",
 		"vscode:prepublish": "npm run build",
 		"pub": "vsce publish --no-dependencies",
-		"package": "vsce package --no-dependencies",
-		"package-and-install": "npm run package && node ./.vscode/install-package.js"
+		"package": "vsce package --no-dependencies"
 	},
 	"dependencies": {
 		"ajv-keywords": "^3.5.2",
