@@ -1,12 +1,9 @@
 {
-	"name": "git-graph-history3",
-	"displayName": "GH",
-	"version": "2.3.1",
-	"publisher": "cweijan",
-	"author": {
-		"name": "Weijan Chen",
-		"email": "cweijan@163.com"
-	},
+	"name": "git-graph-pro",
+	"displayName": "ggp",
+	"version": "1.0.0",
+	"publisher": "LinJUn",
+	"author": "LinJUn",
 	"description": "View Git History as graph, and perform Git actions from the graph.",
 	"keywords": [
 		"git",
@@ -18,15 +15,15 @@
 	"categories": [
 		"Other"
 	],
-	"homepage": "https://github.com/vscode-ext-studio/vscode-git-graph",
+	"homepage": "https://github.com/mhutchie/vscode-git-graph",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/vscode-ext-studio/vscode-git-graph.git"
+		"url": "https://github.com/mhutchie/vscode-git-graph.git"
 	},
 	"bugs": {
-		"url": "https://github.com/vscode-ext-studio/vscode-git-graph/issues"
+		"url": "https://github.com/mhutchie/vscode-git-graph/issues"
 	},
-	"qna": "https://github.com/vscode-ext-studio/vscode-git-graph/wiki/Support-Resources",
+	"qna": "https://github.com/mhutchie/vscode-git-graph/wiki/Support-Resources",
 	"icon": "resources/icon.png",
 	"engines": {
 		"vscode": "^1.38.0"
@@ -398,7 +395,7 @@
 							}
 						}
 					},
-					"markdownDescription": "Customise which context menu actions are visible. For example, if you want to hide the rebase action from the branch context menu, a suitable value for this setting is `{ \"branch\": { \"rebase\": false } }`. For more information of how to configure this setting, view the documentation [here](https://github.com/vscode-ext-studio/vscode-git-graph/wiki/Extension-Settings#context-menu-actions-visibility)."
+					"markdownDescription": "Customise which context menu actions are visible. For example, if you want to hide the rebase action from the branch context menu, a suitable value for this setting is `{ \"branch\": { \"rebase\": false } }`. For more information of how to configure this setting, view the documentation [here](https://github.com/mhutchie/vscode-git-graph/wiki/Extension-Settings#context-menu-actions-visibility)."
 				},
 				"git-graph.customBranchGlobPatterns": {
 					"type": "array",
@@ -468,12 +465,12 @@
 							"templateUrl": {
 								"type": "string",
 								"title": "Template URL",
-								"markdownDescription": "A template URL that can be used to create a Pull Request, after the $1 - $8 variables have been substituted to construct the final URL. For information on how to configure this setting, see the documentation [here](https://github.com/vscode-ext-studio/vscode-git-graph/wiki/Configuring-a-custom-Pull-Request-Provider)."
+								"markdownDescription": "A template URL that can be used to create a Pull Request, after the $1 - $8 variables have been substituted to construct the final URL. For information on how to configure this setting, see the documentation [here](https://github.com/mhutchie/vscode-git-graph/wiki/Configuring-a-custom-Pull-Request-Provider)."
 							}
 						}
 					},
 					"default": [],
-					"markdownDescription": "An array of custom Pull Request providers that can be used in the \"Pull Request Creation\" Integration. For information on how to configure this setting, see the documentation [here](https://github.com/vscode-ext-studio/vscode-git-graph/wiki/Configuring-a-custom-Pull-Request-Provider)."
+					"markdownDescription": "An array of custom Pull Request providers that can be used in the \"Pull Request Creation\" Integration. For information on how to configure this setting, see the documentation [here](https://github.com/mhutchie/vscode-git-graph/wiki/Configuring-a-custom-Pull-Request-Provider)."
 				},
 				"git-graph.date.format": {
 					"type": "string",
