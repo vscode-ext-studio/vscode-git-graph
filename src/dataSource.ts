@@ -752,9 +752,9 @@ export class DataSource extends Disposable {
 	public fetch(repo: string, remote: string | null, prune: boolean, pruneTags: boolean) {
 		let args = ['fetch', remote === null ? '--all' : remote];
 
-		if (prune) {
+		// if (prune) {
 			args.push('--prune');
-		}
+		// }
 		if (pruneTags) {
 			if (!prune) {
 				return Promise.resolve('In order to Prune Tags, pruning must also be enabled when fetching from ' + (remote !== null ? 'a remote' : 'remote(s)') + '.');
