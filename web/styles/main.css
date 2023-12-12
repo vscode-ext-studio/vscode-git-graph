@@ -964,7 +964,7 @@ body.tagLabelsRightAligned .gitRef.tag{
 }
 
 #controls.fetchSupported{
-	padding-right:162px;
+	/* padding-right:162px; */
 }
 
 #controls input:focus{
