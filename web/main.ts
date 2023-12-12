@@ -2074,7 +2074,7 @@ export class GitGraphView {
 		this.setContentHeight()
 		let windowWidth = window.outerWidth, windowHeight = window.outerHeight;
 		const controls = document.getElementById('controls')
-		new ResizeObserver(() => {
+		const udpateCdvHeight = () => {
 			if (windowWidth === window.outerWidth && windowHeight === window.outerHeight) {
 				this.renderGraph();
 			} else {
@@ -2082,7 +2082,9 @@ export class GitGraphView {
 				windowHeight = window.outerHeight;
 			}
 			this.setContentHeight()
-		}).observe(controls!)
+		}
+		new ResizeObserver(udpateCdvHeight).observe(controls!)
+		addEventListener('resize', udpateCdvHeight)
 	}
 
 	private observeWebviewStyleChanges() {
