@@ -2,7 +2,9 @@
 	"compilerOptions": {
 		"lib": [
 			"es6",
-			"dom"
+			"dom",
+			"es2017",
+            "es2019"
 		],
 		"module": "es6",
 		"moduleResolution": "node",
@@ -11,6 +13,6 @@
 		"outDir": "../media",
 		"removeComments": true,
 		"strict": true,
-		"target": "es5"
+		"target": "es6"
 	}
 }

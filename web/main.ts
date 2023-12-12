@@ -18,6 +18,7 @@ require("./findWidget")
 require("./settingsWidget")
 require("./textFormatter")
 require("./utils")
+import ResizeObserver from 'resize-observer-polyfill';
 
 export class GitGraphView {
 	private gitRepos: GG.GitRepoSet;
@@ -889,7 +890,7 @@ export class GitGraphView {
 	}
 
 	private renderTable() {
-		console.log(this.contentScrollTop)
+		// console.log('contentScrollTop', this.contentScrollTop)
 		const colVisibility = this.getColumnVisibility();
 		const currentHash = this.commits.length > 0 && this.commits[0].hash === UNCOMMITTED ? UNCOMMITTED : this.commitHead;
 		const vertexColours = this.graph.getVertexColours();
@@ -956,7 +957,7 @@ export class GitGraphView {
 				'</tr>';
 		}
 		this.tableElem.innerHTML = '<table>' + html + '</table>';
-		this.footerElem.innerHTML = this.moreCommitsAvailable ? '<div id="loadMoreCommitsBtn" class="roundedBtn">Load More Commits</div>' : '';
+		this.footerElem.innerHTML = `<div id="loadMoreCommitsBtn" class="roundedBtn ${this.moreCommitsAvailable?'':'disabled'}">Load More Commits</div>`
 		this.makeTableResizable();
 		this.findWidget.refresh();
 		this.renderedGitBranchHead = this.gitBranchHead;
@@ -1809,10 +1810,10 @@ export class GitGraphView {
 	/* Table Utils */
 
 	private makeTableResizable() {
-		console.log('makeTableResizable')
+		// console.log('makeTableResizable')
 		// let colHeadersElem = document.getElementById('tableColHeaders')!, cols = <HTMLCollectionOf<HTMLElement>>document.getElementsByClassName('tableColHeader');
 		let cols: HTMLCollectionOf<HTMLElement> = document.querySelectorAll('#commitTable tr:nth-child(2) td') as any;
-		console.log(cols.length)
+		// console.log(cols.length)
 		let columnWidths: GG.ColumnWidth[], mouseX = -1, col = -1, colIndex = -1;
 
 		const makeTableFixedLayout = () => {
@@ -2055,7 +2056,7 @@ export class GitGraphView {
 	/* Observers */
 
 	private setContentHeight(cdvHeight: number = 0) {
-		console.log('setContentHeight')
+		// console.log('setContentHeight')
 		// if(!cdvHeight){
 		// 	const cdv=document.getElementById('cdv')
 		// 	if(cdv){
@@ -2063,9 +2064,9 @@ export class GitGraphView {
 		// 	}
 		// }
 		const toolbarHeight = document.getElementById('controls')?.offsetHeight || 42;
-		const footHeight = 58;
+		// const footHeight = document.getElementById('footer')?.offsetHeight || 58;
+		const footHeight = 42;
 		const content = document.getElementById('content')
-		// const height = window.innerHeight - 42 - cdvHeight;
 		const height = window.innerHeight - toolbarHeight - footHeight;
 		content!.style.height = height + "px";
 	}

@@ -95,6 +95,7 @@ export class GitGraphView extends Disposable {
 		if (isViewFile) {
 			column = vscode.ViewColumn.Two
 		}
+		const singleEditor = vscode.window.tabGroups.all.length <= 1;
 		this.panel = vscode.window.createWebviewPanel('git-graph', title, {
 			viewColumn: column || vscode.ViewColumn.One,
 			preserveFocus: true
@@ -103,7 +104,7 @@ export class GitGraphView extends Disposable {
 			localResourceRoots: [vscode.Uri.file(path.join(extensionPath, 'media'))],
 			retainContextWhenHidden: config.retainContextWhenHidden
 		});
-		if (isViewFile) vscode.commands.executeCommand('workbench.action.toggleEditorGroupLayout')
+		if (isViewFile && singleEditor) vscode.commands.executeCommand('workbench.action.toggleEditorGroupLayout')
 		this.panel.iconPath = config.tabIconColourTheme === TabIconColourTheme.Colour
 			? this.getResourcesUri('webview-icon.svg')
 			: {
