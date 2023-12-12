@@ -181,8 +181,8 @@ export class GitGraphView {
 			this.searchValue = prevState.searchValue;
 			this.currentAuthors = prevState.currentAuthors;
 			const searchInput: HTMLInputElement = document.getElementById('searchInput') as any;
-			if(searchInput && this.searchValue){
-				searchInput.value=this.searchValue
+			if (searchInput && this.searchValue) {
+				searchInput.value = this.searchValue
 			}
 			this.avatars = prevState.avatars;
 			this.gitConfig = prevState.gitConfig;
@@ -2055,23 +2055,26 @@ export class GitGraphView {
 	/* Observers */
 
 	private setContentHeight(cdvHeight: number = 0) {
+		console.log('setContentHeight')
 		// if(!cdvHeight){
 		// 	const cdv=document.getElementById('cdv')
 		// 	if(cdv){
 		// 		cdvHeight=parseInt(cdv.style.height.replace("px",''))
 		// 	}
 		// }
+		const toolbarHeight = document.getElementById('controls')?.offsetHeight || 42;
 		const footHeight = 58;
 		const content = document.getElementById('content')
 		// const height = window.innerHeight - 42 - cdvHeight;
-		const height = window.innerHeight - 42 - footHeight;
+		const height = window.innerHeight - toolbarHeight - footHeight;
 		content!.style.height = height + "px";
 	}
 
 	private observeWindowSizeChanges() {
 		this.setContentHeight()
 		let windowWidth = window.outerWidth, windowHeight = window.outerHeight;
-		window.addEventListener('resize', () => {
+		const controls = document.getElementById('controls')
+		new ResizeObserver(() => {
 			if (windowWidth === window.outerWidth && windowHeight === window.outerHeight) {
 				this.renderGraph();
 			} else {
@@ -2079,7 +2082,7 @@ export class GitGraphView {
 				windowHeight = window.outerHeight;
 			}
 			this.setContentHeight()
-		});
+		}).observe(controls!)
 	}
 
 	private observeWebviewStyleChanges() {
@@ -2845,7 +2848,7 @@ export class GitGraphView {
 		// elem.style.height = heightPx;
 		// if (isDocked) this.viewElem.style.bottom = heightPx;
 		elem.style.left = Math.min(window.innerWidth - 400, (this.mousePosition.x + 100)) + "px";
-		elem.style.top = Math.max(Math.min(window.innerHeight - elem.clientHeight - 10, Math.max(0, (this.mousePosition.y - 80))),0) + "px";
+		elem.style.top = Math.max(Math.min(window.innerHeight - elem.clientHeight - 10, Math.max(0, (this.mousePosition.y - 80))), 0) + "px";
 		this.setContentHeight(height)
 	}
 
