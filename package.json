@@ -1,7 +1,7 @@
 {
 	"name": "git-graph-pro",
 	"displayName": "ggp",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"publisher": "LinJUn",
 	"author": "LinJUn",
 	"description": "View Git History as graph, and perform Git actions from the graph.",
@@ -26,7 +26,7 @@
 	"qna": "https://github.com/mhutchie/vscode-git-graph/wiki/Support-Resources",
 	"icon": "resources/icon.png",
 	"engines": {
-		"vscode": "^1.38.0"
+		"vscode": "^1.67.0"
 	},
 	"extensionKind": [
 		"workspace"
