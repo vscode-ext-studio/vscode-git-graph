@@ -1,7 +1,7 @@
 {
 	"name": "git-graph-pro",
-	"displayName": "ggp",
-	"version": "1.1.0",
+	"displayName": "Git Graph Plus",
+	"version": "1.1.1",
 	"publisher": "LinJUn",
 	"author": "LinJUn",
 	"description": "View Git History as graph, and perform Git actions from the graph.",
