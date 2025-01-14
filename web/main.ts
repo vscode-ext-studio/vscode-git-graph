@@ -957,7 +957,7 @@ export class GitGraphView {
 				'</tr>';
 		}
 		this.tableElem.innerHTML = '<table>' + html + '</table>';
-		this.footerElem.innerHTML = `<div id="loadMoreCommitsBtn" class="roundedBtn ${this.moreCommitsAvailable?'':'disabled'}">Load More Commits</div>`
+		this.footerElem.innerHTML = `<div id="loadMoreCommitsBtn" class="roundedBtn ${this.moreCommitsAvailable ? '' : 'disabled'}">Load More Commits</div>`
 		this.makeTableResizable();
 		this.findWidget.refresh();
 		this.renderedGitBranchHead = this.gitBranchHead;
@@ -1192,7 +1192,7 @@ export class GitGraphView {
 				title: 'Copy Commit Hash',
 				visible: visibility.copyHash,
 				onClick: () => {
-					sendMessage({ command: 'copyToClipboard', type: 'Commit Hash', data: hash });
+					sendMessage({ command: 'copyToClipboard', type: 'Commit Hash', data: hash.substring(0, 8) });
 				}
 			}, {
 				title: 'Copy Commit Text',
