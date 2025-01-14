@@ -602,7 +602,7 @@ code {
 	margin-top: 4px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	overflow-x: hidden;
+	overflow-x: visible;
 }
 
 #cdvLoading {
@@ -659,6 +659,7 @@ code {
 #cdv.docked #cdvControls {
 	top: 2px;
 	bottom: 0;
+	height: max-content;
 }
 
 #cdv.docked #cdvDivider {
@@ -759,6 +760,11 @@ svg.openFolderIcon,
 svg.closedFolderIcon,
 svg.fileIcon {
 	width: 13px;
+}
+
+
+.fileTreeFolderContents {
+	overflow: auto;
 }
 
 .fileTreeFolderContents.hidden {
