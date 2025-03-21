@@ -32,7 +32,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		logger.log('Using ' + gitExecutable.path + ' (version: ' + gitExecutable.version + ')');
 	} catch (_) {
 		gitExecutable = null;
-		showErrorMessage(UNABLE_TO_FIND_GIT_MSG);
+		// showErrorMessage(UNABLE_TO_FIND_GIT_MSG);
 		logger.logError(UNABLE_TO_FIND_GIT_MSG);
 	}
 
@@ -47,7 +47,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	const diffDocProvider = new DiffDocProvider(dataSource);
 
 	context.subscriptions.push(
-		vscode.workspace.registerFileSystemProvider(DiffDocProvider.scheme, diffDocProvider,{
+		vscode.workspace.registerFileSystemProvider(DiffDocProvider.scheme, diffDocProvider, {
 			isCaseSensitive: true,
 			isReadonly: true,
 		}),
