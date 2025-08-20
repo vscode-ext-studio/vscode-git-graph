@@ -1465,6 +1465,10 @@
 			],
 			"editor/title": [
 				{
+					"command": "git-graph.viewFileHistory",
+					"group": "navigation@4"
+				},
+				{
 					"command": "git-graph.openFile",
 					"group": "navigation",
 					"when": "isInDiffEditor && resourceScheme == git-graph && git-graph:codiconsSupported"
