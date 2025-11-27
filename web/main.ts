@@ -84,9 +84,9 @@ export class GitGraphView {
 	private readonly refreshBtnElem: HTMLElement;
 	private readonly scrollShadowElem: HTMLElement;
 
-	constructor(viewElem: HTMLElement, prevState: WebViewState | null) {
+	constructor(viewElem: HTMLElement) {
 		this.gitRepos = initialState.repos;
-		this.fileUri = initialState.fileUri || prevState?.fileUri;
+		this.fileUri = initialState.fileUri;
 		this.config = initialState.config;
 		this.maxCommits = this.config.initialLoadCommits;
 		this.viewElem = viewElem;
@@ -173,41 +173,9 @@ export class GitGraphView {
 		this.observeUrls();
 		this.observeTableEvents();
 
-		if (prevState && !prevState.currentRepoLoading && typeof this.gitRepos[prevState.currentRepo] !== 'undefined') {
-			this.fileUri = prevState.fileUri;
-			this.mousePosition = prevState.mousePosition;
-			this.currentRepo = prevState.currentRepo;
-			this.currentBranches = prevState.currentBranches;
-			this.maxCommits = prevState.maxCommits;
-			this.expandedCommit = prevState.expandedCommit;
-			this.contentScrollTop = prevState.contentScrollTop;
-			this.filterCurrent = prevState.filterCurrent;
-			this.searchValue = prevState.searchValue;
-			this.currentAuthors = prevState.currentAuthors;
-			const searchInput: HTMLInputElement = document.getElementById('searchInput') as any;
-			if (searchInput && this.searchValue) {
-				searchInput.value = this.searchValue
-			}
-			this.avatars = prevState.avatars;
-			this.gitConfig = prevState.gitConfig;
-			this.loadRepoInfo(prevState.gitBranches, prevState.gitBranchHead, prevState.gitRemotes, prevState.gitStashes, true);
-			// this.loadCommits(prevState.commits, prevState.commitHead, prevState.gitTags, prevState.moreCommitsAvailable, prevState.onlyFollowFirstParent);
-			this.findWidget.restoreState(prevState.findWidget);
-			this.authorDropdown.setOptions(this.getAuthorOptions(), this.currentAuthors);
-			this.settingsWidget.restoreState(prevState.settingsWidget);
-			this.showRemoteBranchesElem.checked = getShowRemoteBranches(this.gitRepos[prevState.currentRepo].showRemoteBranchesV2);
-		}
-
 		let loadViewTo = initialState.loadViewTo;
-		if (loadViewTo === null && prevState && prevState.currentRepoLoading && typeof prevState.currentRepo !== 'undefined') {
-			loadViewTo = { repo: prevState.currentRepo };
-		}
 
 		if (!this.loadRepos(this.gitRepos, initialState.lastActiveRepo, loadViewTo)) {
-			if (prevState) {
-				this.scrollTop = prevState.scrollTop;
-				this.viewElem.scroll(0, this.scrollTop);
-			}
 			this.requestLoadRepoInfoAndCommits(false, false);
 		}
 
@@ -791,31 +759,6 @@ export class GitGraphView {
 
 		VSCODE_API.setState({
 			fileUri: this.fileUri,
-			mousePosition: this.mousePosition,
-			currentRepo: this.currentRepo,
-			currentRepoLoading: this.currentRepoLoading,
-			gitRepos: this.gitRepos,
-			gitBranches: this.gitBranches,
-			gitBranchHead: this.gitBranchHead,
-			gitConfig: this.gitConfig,
-			gitRemotes: this.gitRemotes,
-			gitStashes: this.gitStashes,
-			gitTags: this.gitTags,
-			commits: this.commits,
-			commitHead: this.commitHead,
-			avatars: this.avatars,
-			currentBranches: this.currentBranches,
-			currentAuthors: this.currentAuthors,
-			contentScrollTop: this.contentScrollTop,
-			filterCurrent: this.filterCurrent,
-			searchValue: this.searchValue,
-			moreCommitsAvailable: this.moreCommitsAvailable,
-			maxCommits: this.maxCommits,
-			onlyFollowFirstParent: this.onlyFollowFirstParent,
-			expandedCommit: expandedCommit,
-			scrollTop: this.scrollTop,
-			findWidget: this.findWidget.getState(),
-			settingsWidget: this.settingsWidget.getState()
 		});
 	}
 
@@ -3392,7 +3335,7 @@ window.addEventListener('load', () => {
 	const viewElem = document.getElementById('view');
 	if (viewElem === null) return;
 
-	const gitGraph = new GitGraphView(viewElem, null);
+	const gitGraph = new GitGraphView(viewElem);
 	const imageResizer = new ImageResizer();
 
 	/* Command Processing */

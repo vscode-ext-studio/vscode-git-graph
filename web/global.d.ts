@@ -48,31 +48,6 @@ declare global {
 
 	interface WebViewState {
 		readonly fileUri?: string;
-		readonly mousePosition: { x: number, y: number };
-		readonly currentRepo: string;
-		readonly currentRepoLoading: boolean;
-		readonly gitRepos: GG.GitRepoSet;
-		readonly gitBranches: ReadonlyArray<string>;
-		readonly gitBranchHead: string | null;
-		readonly gitConfig: GG.GitRepoConfig | null;
-		readonly gitRemotes: ReadonlyArray<string>;
-		readonly gitStashes: ReadonlyArray<GG.GitStash>;
-		readonly gitTags: ReadonlyArray<string>;
-		readonly commits: GG.GitCommit[];
-		readonly commitHead: string | null;
-		readonly avatars: AvatarImageCollection;
-		readonly currentBranches: string[] | null;
-		readonly moreCommitsAvailable: boolean;
-		readonly maxCommits: number;
-		readonly onlyFollowFirstParent: boolean;
-		readonly expandedCommit: ExpandedCommit | null;
-		readonly scrollTop: number;
-		readonly contentScrollTop: number | undefined;
-		readonly filterCurrent: boolean;
-		readonly searchValue: string | null;
-		readonly currentAuthors: string[];
-		readonly findWidget: FindWidgetState;
-		readonly settingsWidget: SettingsWidgetState;
 	}
 
 
