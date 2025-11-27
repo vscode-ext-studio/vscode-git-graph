@@ -379,6 +379,8 @@ code {
 
 #cdv.docked {
 	display: block;
+	max-height: 90vh;
+    overflow: scroll;
 	position: fixed;
 	/* left:0; */
 	/* bottom:0; */
@@ -577,9 +579,10 @@ code {
 	left: 0 !important;
 	right: 0;
 	padding: 4px 8px 8px 0;
-	-webkit-user-select: none;
-	user-select: none;
-	padding-bottom: 135px;
+}
+
+.fileTreeFileAddDel{
+	user-select: none; 
 }
 
 #cdvFiles ul {
