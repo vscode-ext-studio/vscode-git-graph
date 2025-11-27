@@ -192,6 +192,7 @@ export interface GitRepoState {
     workspaceFolderIndex: number | null;
 }
 export interface GitGraphViewInitialState {
+    readonly fileUri?: string;
     readonly config: GitGraphViewConfig;
     readonly lastActiveRepo: string | null;
     readonly loadViewTo: LoadGitGraphViewTo;
@@ -243,7 +244,7 @@ export interface CommitDetailsViewConfig {
     readonly fileTreeCompactFolders: boolean;
     readonly fileViewType: FileViewType;
 }
-export interface ActionedUser{
+export interface ActionedUser {
     name: string;
     email: string;
 }
@@ -805,8 +806,8 @@ export interface RequestLoadCommits extends RepoRequest {
     readonly command: 'loadCommits';
     readonly refreshId: number;
     readonly branches: ReadonlyArray<string> | null;
-    readonly searchValue: string|null;
-    readonly author: string|null;
+    readonly searchValue: string | null;
+    readonly author: string | null;
     readonly maxCommits: number;
     readonly showTags: boolean;
     readonly showRemoteBranches: boolean;
@@ -1130,4 +1131,4 @@ export declare type DeepReadonly<T> = T extends PrimitiveTypes ? T : T extends (
 export declare type DeepWriteable<T> = T extends PrimitiveTypes ? T : T extends (Array<infer U> | ReadonlyArray<infer U>) ? Array<DeepWriteable<U>> : {
     -readonly [K in keyof T]: DeepWriteable<T[K]>;
 };
-export {};
+export { };

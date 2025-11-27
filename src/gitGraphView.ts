@@ -5,6 +5,7 @@ import { getConfig } from './config';
 import { DataSource, GitConfigKey } from './dataSource';
 import { ExtensionState } from './extensionState';
 import { GitAPi } from './gitApi';
+import { GitGraphViewSerializedState } from './gitGraphViewSerializer';
 import { Logger } from './logger';
 import { RepoFileWatcher } from './repoFileWatcher';
 import { RepoManager } from './repoManager';
@@ -44,8 +45,10 @@ export class GitGraphView extends Disposable {
 	 * @param repoManager The Git History RepoManager instance.
 	 * @param logger The Git History Logger instance.
 	 * @param loadViewTo What to load the view to.
+	 * @param fileUri The optional file URI for file-specific history views.
+	 * @param restoredWebviewPanel The optional webview panel to reuse (for restoration after VS Code restart).
 	 */
-	public static createOrShow(extensionPath: string, dataSource: DataSource, extensionState: ExtensionState, avatarManager: AvatarManager, repoManager: RepoManager, logger: Logger, loadViewTo: LoadGitGraphViewTo, fileUri?: vscode.Uri) {
+	public static createOrShow(extensionPath: string, dataSource: DataSource, extensionState: ExtensionState, avatarManager: AvatarManager, repoManager: RepoManager, logger: Logger, loadViewTo: LoadGitGraphViewTo, fileUri?: vscode.Uri, restoredWebviewPanel?: vscode.WebviewPanel) {
 		const column = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : undefined;
 
 		const currentPanel = GitGraphView.panelMap[fileUri + ''];
@@ -63,7 +66,7 @@ export class GitGraphView extends Disposable {
 			currentPanel.panel.reveal(currentPanel.panel.viewColumn, true);
 		} else {
 			// If Git History panel doesn't already exist
-			GitGraphView.panelMap[fileUri + ''] = new GitGraphView(extensionPath, dataSource, extensionState, avatarManager, repoManager, logger, loadViewTo, column, fileUri);
+			GitGraphView.panelMap[fileUri + ''] = new GitGraphView(extensionPath, dataSource, extensionState, avatarManager, repoManager, logger, loadViewTo, column, fileUri, restoredWebviewPanel);
 		}
 	}
 
@@ -77,8 +80,10 @@ export class GitGraphView extends Disposable {
 	 * @param logger The Git History Logger instance.
 	 * @param loadViewTo What to load the view to.
 	 * @param column The column the view should be loaded in.
+	 * @param fileUri The optional file URI for file-specific history views.
+	 * @param restoredWebviewPanel The optional webview panel to reuse (for restoration after VS Code restart).
 	 */
-	private constructor(extensionPath: string, dataSource: DataSource, extensionState: ExtensionState, avatarManager: AvatarManager, repoManager: RepoManager, logger: Logger, loadViewTo: LoadGitGraphViewTo, column: vscode.ViewColumn | undefined, readonly fileUri?: vscode.Uri) {
+	private constructor(extensionPath: string, dataSource: DataSource, extensionState: ExtensionState, avatarManager: AvatarManager, repoManager: RepoManager, logger: Logger, loadViewTo: LoadGitGraphViewTo, column: vscode.ViewColumn | undefined, readonly fileUri?: vscode.Uri, restoredWebviewPanel?: vscode.WebviewPanel) {
 		super();
 		this.extensionPath = extensionPath;
 		this.avatarManager = avatarManager;
@@ -89,30 +94,34 @@ export class GitGraphView extends Disposable {
 		this.loadViewTo = loadViewTo;
 
 		const config = getConfig();
-		const title = fileUri?.fsPath ? `Git History(${path.basename(fileUri.fsPath)})` : 'Git History';
-		const activePath = vscode.window.activeTextEditor?.document?.uri?.fsPath;
-		const isViewFile = fileUri && activePath && activePath == fileUri?.fsPath
-		if (isViewFile) {
-			column = vscode.ViewColumn.Two
+
+		// If a webviewPanel is provided (from restoration), reuse it; otherwise create a new one
+		if (restoredWebviewPanel) {
+			this.panel = restoredWebviewPanel;
+		} else {
+			const title = fileUri?.fsPath ? `Git History(${path.basename(fileUri.fsPath)})` : 'Git History';
+			const activePath = vscode.window.activeTextEditor?.document?.uri?.fsPath;
+			const isViewFile = fileUri && activePath && activePath == fileUri?.fsPath
+			if (isViewFile) {
+				column = vscode.ViewColumn.Two
+			}
+			const singleEditor = vscode.window.tabGroups.all.length <= 1;
+			this.panel = vscode.window.createWebviewPanel('git-graph', title, {
+				viewColumn: column || vscode.ViewColumn.One,
+				preserveFocus: true
+			}, {
+				enableScripts: true,
+				localResourceRoots: [vscode.Uri.file(path.join(extensionPath, 'media'))],
+				retainContextWhenHidden: config.retainContextWhenHidden
+			});
+			if (isViewFile && singleEditor) vscode.commands.executeCommand('workbench.action.toggleEditorGroupLayout')
+			this.panel.iconPath = config.tabIconColourTheme === TabIconColourTheme.Colour
+				? this.getResourcesUri('webview-icon.svg')
+				: {
+					light: this.getResourcesUri('webview-icon-light.svg'),
+					dark: this.getResourcesUri('webview-icon-dark.svg')
+				};
 		}
-		const singleEditor = vscode.window.tabGroups.all.length <= 1;
-		this.panel = vscode.window.createWebviewPanel('git-graph', title, {
-			viewColumn: column || vscode.ViewColumn.One,
-			preserveFocus: true
-		}, {
-			enableScripts: true,
-			localResourceRoots: [vscode.Uri.file(path.join(extensionPath, 'media'))],
-			retainContextWhenHidden: config.retainContextWhenHidden
-		});
-		if (isViewFile && singleEditor) vscode.commands.executeCommand('workbench.action.toggleEditorGroupLayout')
-		this.panel.iconPath = config.tabIconColourTheme === TabIconColourTheme.Colour
-			? this.getResourcesUri('webview-icon.svg')
-			: {
-				light: this.getResourcesUri('webview-icon-light.svg'),
-				dark: this.getResourcesUri('webview-icon-dark.svg')
-			};
-
-
 		let ace = column == vscode.ViewColumn.Two ? vscode.window.activeTextEditor : null
 		this.registerDisposables(
 			// Dispose Git History View resources when disposed
@@ -688,6 +697,7 @@ export class GitGraphView extends Disposable {
 	private getHtmlForWebview() {
 		const config = getConfig(), nonce = getNonce();
 		const initialState: GitGraphViewInitialState = {
+			fileUri: this.fileUri?.fsPath,
 			config: {
 				commitDetailsView: config.commitDetailsView,
 				commitOrdering: config.commitOrder,

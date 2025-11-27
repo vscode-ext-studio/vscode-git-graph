@@ -21,6 +21,7 @@ require("./utils")
 import ResizeObserver from 'resize-observer-polyfill';
 
 export class GitGraphView {
+	private fileUri: string | undefined;  // File URI for file-specific history views (used for restoration)
 	private gitRepos: GG.GitRepoSet;
 	private gitBranches: ReadonlyArray<string> = [];
 	private gitBranchHead: string | null = null;
@@ -85,6 +86,7 @@ export class GitGraphView {
 
 	constructor(viewElem: HTMLElement, prevState: WebViewState | null) {
 		this.gitRepos = initialState.repos;
+		this.fileUri = initialState.fileUri || prevState?.fileUri;
 		this.config = initialState.config;
 		this.maxCommits = this.config.initialLoadCommits;
 		this.viewElem = viewElem;
@@ -172,6 +174,7 @@ export class GitGraphView {
 		this.observeTableEvents();
 
 		if (prevState && !prevState.currentRepoLoading && typeof this.gitRepos[prevState.currentRepo] !== 'undefined') {
+			this.fileUri = prevState.fileUri;
 			this.mousePosition = prevState.mousePosition;
 			this.currentRepo = prevState.currentRepo;
 			this.currentBranches = prevState.currentBranches;
@@ -787,6 +790,7 @@ export class GitGraphView {
 		}
 
 		VSCODE_API.setState({
+			fileUri: this.fileUri,
 			mousePosition: this.mousePosition,
 			currentRepo: this.currentRepo,
 			currentRepoLoading: this.currentRepoLoading,
@@ -3388,7 +3392,7 @@ window.addEventListener('load', () => {
 	const viewElem = document.getElementById('view');
 	if (viewElem === null) return;
 
-	const gitGraph = new GitGraphView(viewElem, VSCODE_API.getState());
+	const gitGraph = new GitGraphView(viewElem, null);
 	const imageResizer = new ImageResizer();
 
 	/* Command Processing */

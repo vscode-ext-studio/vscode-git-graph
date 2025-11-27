@@ -107,8 +107,9 @@ export class CommandManager extends Disposable {
 	/**
 	 * The method run when the `git-graph.view` command is invoked.
 	 * @param arg An optional argument passed to the command (when invoked from the Visual Studio Code Git Extension).
+	 * @param webviewPanel Optional webview panel for restoration after VS Code restart.
 	 */
-	private async view(arg: any) {
+	private async view(arg: any, webviewPanel?: any) {
 		let loadRepo: string | null = null;
 
 		if (arg?.rootUri) {
@@ -124,7 +125,7 @@ export class CommandManager extends Disposable {
 			loadRepo = this.repoManager.getRepoContainingFile(getPathFromUri(vscode.window.activeTextEditor.document.uri));
 		}
 
-		GitGraphView.createOrShow(this.context.extensionPath, this.dataSource, this.extensionState, this.avatarManager, this.repoManager, this.logger, loadRepo !== null ? { repo: loadRepo } : null, arg);
+		GitGraphView.createOrShow(this.context.extensionPath, this.dataSource, this.extensionState, this.avatarManager, this.repoManager, this.logger, loadRepo !== null ? { repo: loadRepo } : null, arg, webviewPanel);
 	}
 
 	/**

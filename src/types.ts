@@ -224,6 +224,7 @@ export interface GitRepoState {
 /* Git History View Types */
 
 export interface GitGraphViewInitialState {
+	readonly fileUri?: string;  // File URI for file-specific history views (used for restoration)
 	readonly config: GitGraphViewConfig;
 	readonly lastActiveRepo: string | null;
 	readonly loadViewTo: LoadGitGraphViewTo;
@@ -904,7 +905,7 @@ export interface RequestLoadCommits extends RepoRequest {
 	readonly refreshId: number;
 	readonly branches: ReadonlyArray<string> | null; // null => Show All
 	readonly searchValue: string;
-    readonly author: string|undefined;
+	readonly author: string | undefined;
 	readonly maxCommits: number;
 	readonly showTags: boolean;
 	readonly showRemoteBranches: boolean;
@@ -1234,9 +1235,9 @@ export interface ResponseViewDiffWithWorkingFile extends ResponseWithErrorInfo {
 	readonly command: 'viewDiffWithWorkingFile';
 }
 
-export interface ActionedUser{
-    name: string;
-    email: string;
+export interface ActionedUser {
+	name: string;
+	email: string;
 };
 
 export interface RequestViewFileAtRevision extends RepoRequest {

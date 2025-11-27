@@ -5,6 +5,7 @@ import { getConfig } from './config';
 import { DataSource } from './dataSource';
 import { DiffDocProvider } from './diffDocProvider';
 import { ExtensionState } from './extensionState';
+import { GitGraphViewSerializer } from './gitGraphViewSerializer';
 import { onStartUp } from './life-cycle/startup';
 import { Logger } from './logger';
 import { RepoManager } from './repoManager';
@@ -46,7 +47,9 @@ export async function activate(context: vscode.ExtensionContext) {
 	const commandManager = new CommandManager(context, avatarManager, dataSource, extensionState, repoManager, gitExecutable, onDidChangeGitExecutable, logger);
 	const diffDocProvider = new DiffDocProvider(dataSource);
 
+	const gitGraphViewSerializer = new GitGraphViewSerializer(context.extensionPath, dataSource, extensionState, avatarManager, repoManager, logger);
 	context.subscriptions.push(
+		vscode.window.registerWebviewPanelSerializer('git-graph', gitGraphViewSerializer),
 		vscode.workspace.registerFileSystemProvider(DiffDocProvider.scheme, diffDocProvider, {
 			isCaseSensitive: true,
 			isReadonly: true,
