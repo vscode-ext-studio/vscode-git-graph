@@ -101,12 +101,15 @@ export class GitGraphView extends Disposable {
 		} else {
 			const title = fileUri?.fsPath ? `Git History(${path.basename(fileUri.fsPath)})` : 'Git History';
 			const activePath = vscode.window.activeTextEditor?.document?.uri?.fsPath;
+			const isCursor = /Cursor/i.test(vscode.env.appName);
 			const isViewFile = fileUri && activePath && activePath == fileUri?.fsPath
 			if (isViewFile) {
-				column = vscode.ViewColumn.Two
+				column = isCursor ? vscode.ViewColumn.Beside : vscode.ViewColumn.Two
 			}
-			const singleEditor = vscode.window.tabGroups.all.length <= 1;
-			this.panel = vscode.window.createWebviewPanel('git-graph', title, {
+			const limit = isCursor ? 2 : 1;
+			const singleEditor = vscode.window.tabGroups.all.length <= limit;
+			const viewId = isCursor ? `git-graph_${Date.now()}` : 'git-graph'
+			this.panel = vscode.window.createWebviewPanel(viewId, title, {
 				viewColumn: column || vscode.ViewColumn.One,
 				preserveFocus: true
 			}, {
