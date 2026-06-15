@@ -356,10 +356,17 @@ export class Dialog {
 			dialogContent.style.height = Math.round(0.8 * docHeight - 22) + 'px';
 			dialogHeight = Math.round(0.8 * docHeight);
 		}
-		const event = (target as any)?.event;
+		const event = (target as DialogTarget & { event?: MouseEvent })?.event;
 		if (event) {
-			dialog.style.top = (event.y-90) + 'px';
-			dialog.style.left = (event.x-50) + 'px';
+			const anchorY = event.clientY;
+			const top = target !== null && target.type === TargetType.Repo && anchorY < 120
+				? anchorY + 8
+				: anchorY - 90;
+			dialog.style.top = Math.max(Math.min(top, docHeight - dialogHeight - 10), 10) + 'px';
+			dialog.style.left = Math.max(event.clientX - 50, 10) + 'px';
+			dialog.style.transform = 'none';
+		} else if (target !== null && target.type === TargetType.Repo) {
+			dialog.style.top = Math.max(Math.round((docHeight - dialogHeight) / 2 - 80), 10) + 'px';
 		} else {
 			dialog.style.top = Math.max(Math.round((docHeight - dialogHeight) / 2), 10) + 'px';
 		}

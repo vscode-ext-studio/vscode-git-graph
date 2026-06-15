@@ -90,6 +90,7 @@ declare global {
 
 	interface RepoTarget {
 		type: TargetType.Repo;
+		event?: MouseEvent;
 	}
 
 	interface CommitTarget extends CommitOrRefTarget {

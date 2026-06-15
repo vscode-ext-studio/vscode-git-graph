@@ -186,6 +186,11 @@ export class GitGraphView {
 		fetchBtn.addEventListener('click', () => this.fetchFromRemotesAction());
 		findBtn.innerHTML = SVG_ICONS.search;
 		findBtn.addEventListener('click', () => this.findWidget.show(true));
+		const openRemoteBtn = document.getElementById('openRemoteBtn')!;
+		openRemoteBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+			this.openRemoteUrlAction(e);
+		});
 		this.checkRemote()
 		settingsBtn.innerHTML = SVG_ICONS.gear;
 		settingsBtn.addEventListener('click', () => this.settingsWidget.show(this.currentRepo));
@@ -1721,15 +1726,73 @@ export class GitGraphView {
 	}
 
 	private checkRemote() {
-		const remoteHref = document.getElementById('openRemoteBtn') as HTMLLinkElement
-		const remotes = this?.gitConfig?.remotes;
-		if (remotes && remotes.length > 0) {
-			let url = remotes[0].url!;
-			if (url.startsWith("git@")) {
-				url = url.replace(":", "/").replace("git@", "https://").replace(".git", "")
-			}
-			remoteHref.href = url;
+		const openRemoteBtn = document.getElementById('openRemoteBtn') as HTMLAnchorElement;
+		const remotesWithUrls = this.getRemotesWithWebUrls();
+		if (remotesWithUrls.length === 0) {
+			openRemoteBtn.style.display = 'none';
+			openRemoteBtn.removeAttribute('href');
+			openRemoteBtn.title = '';
+			return;
 		}
+
+		openRemoteBtn.style.display = '';
+		if (remotesWithUrls.length === 1) {
+			openRemoteBtn.href = remotesWithUrls[0].url;
+			openRemoteBtn.title = 'Open Remote: ' + remotesWithUrls[0].name;
+		} else {
+			openRemoteBtn.href = '#';
+			openRemoteBtn.title = 'Open Remote';
+		}
+	}
+
+	private getRemotesWithWebUrls(): { name: string, url: string }[] {
+		const remotes = this.gitConfig?.remotes;
+		if (!remotes) return [];
+
+		const remotesWithUrls: { name: string, url: string }[] = [];
+		for (let i = 0; i < remotes.length; i++) {
+			const webUrl = this.convertRemoteUrlToWebUrl(remotes[i].url);
+			if (webUrl !== null) {
+				remotesWithUrls.push({ name: remotes[i].name, url: webUrl });
+			}
+		}
+		return remotesWithUrls;
+	}
+
+	private convertRemoteUrlToWebUrl(url: string | null): string | null {
+		if (url === null || url === '') return null;
+
+		if (url.startsWith('git@')) {
+			return url.replace(':', '/').replace('git@', 'https://').replace('.git', '');
+		}
+		return url;
+	}
+
+	private openRemoteUrlAction(anchorEvent?: MouseEvent) {
+		const remotesWithUrls = this.getRemotesWithWebUrls();
+		if (remotesWithUrls.length === 0) return;
+
+		if (remotesWithUrls.length === 1) {
+			sendMessage({ command: 'openExternalUrl', url: remotesWithUrls[0].url });
+			return;
+		}
+
+		dialog.showForm('Which remote would you like to open in your browser?', [
+			{
+				type: DialogInputType.Select,
+				name: 'Remote',
+				default: '0',
+				options: remotesWithUrls.map((remote, i) => ({
+					name: remote.name + ' — ' + remote.url,
+					value: i.toString()
+				}))
+			}
+		], 'Open', (values) => {
+			const index = parseInt(<string>values[0]);
+			if (index >= 0 && index < remotesWithUrls.length) {
+				sendMessage({ command: 'openExternalUrl', url: remotesWithUrls[index].url });
+			}
+		}, { type: TargetType.Repo, event: anchorEvent });
 	}
 
 	private fetchFromRemotesAction() {
