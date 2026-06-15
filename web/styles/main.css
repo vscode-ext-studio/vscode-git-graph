@@ -1049,7 +1049,9 @@ body.tagLabelsRightAligned .gitRef.tag {
 	right: 0;
 	top: 0;
 	padding: 4px 132px 4px 0;
-	border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+	border-bottom: 1px solid var(--vscode-panel-border, rgba(128, 128, 128, 0.5));
+	border-left: 1px solid var(--vscode-panel-border, rgba(128, 128, 128, 0.5));
+	background-color: var(--vscode-sideBarSectionHeader-background, var(--vscode-editor-background));
 	line-height: 32px;
 	/* text-align:center; */
 	font-weight: 700;
@@ -1067,14 +1069,23 @@ body.tagLabelsRightAligned .gitRef.tag {
 #searchInput {
 	display: inline-block;
 	margin-left: 10px;
-	border: 1px solid rgba(128, 128, 128, 0.5);
+	border: 1px solid var(--vscode-input-border, rgba(128, 128, 128, 0.5));
 	width: 180px;
-	background-color: var(--vscode-editor-background);
+	background-color: var(--vscode-input-background, var(--vscode-editor-background));
 	padding: 4px;
 	padding-left: 8px;
 	box-sizing: border-box;
 	border-radius: 4px;
-	color: var(--vscode-foreground);
+	color: var(--vscode-input-foreground, var(--vscode-foreground));
+}
+
+#searchInput::placeholder {
+	color:#757575;
+	/* color: var(--vscode-input-placeholderForeground, var(--vscode-descriptionForeground)); */
+}
+
+#searchInput:focus {
+	border-color: var(--vscode-focusBorder);
 }
 
 #repoControl,
@@ -1122,6 +1133,14 @@ body.tagLabelsRightAligned .gitRef.tag {
 	-webkit-user-select: none;
 	user-select: none;
 	margin-left: 8px;
+}
+
+#findBtn:hover,
+#terminalBtn:hover,
+#settingsBtn:hover,
+#fetchBtn:hover,
+#refreshBtn:hover {
+	background-color: var(--vscode-toolbar-hoverBackground, rgba(128, 128, 128, 0.15));
 }
 
 #openRemoteBtn {
@@ -1252,10 +1271,6 @@ body.tagLabelsRightAligned .gitRef.tag {
 #loadMoreCommitsBtn.disabled {
 	opacity: 0.7;
 	cursor: not-allowed;
-}
-
-#loadMoreCommitsBtn.disabled:hover {
-	background-color: rgba(128, 128, 128, 0.1);
 }
 
 #rescanForReposBtn {

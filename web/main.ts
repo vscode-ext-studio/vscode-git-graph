@@ -494,6 +494,7 @@ export class GitGraphView {
 		this.footerElem.innerHTML = '';
 		this.renderGraph();
 		this.findWidget.refresh();
+		this.setContentHeight();
 	}
 
 	public processLoadRepoInfoResponse(msg: GG.ResponseLoadRepoInfo) {
@@ -906,6 +907,7 @@ export class GitGraphView {
 		}
 		this.tableElem.innerHTML = '<table>' + html + '</table>';
 		this.footerElem.innerHTML = `<div id="loadMoreCommitsBtn" class="roundedBtn ${this.moreCommitsAvailable ? '' : 'disabled'}">Load More Commits</div>`
+		this.setContentHeight();
 		this.makeTableResizable();
 		this.findWidget.refresh();
 		this.renderedGitBranchHead = this.gitBranchHead;
@@ -1995,6 +1997,7 @@ export class GitGraphView {
 
 	private loadMoreCommits() {
 		this.footerElem.innerHTML = '<h2 id="loadingHeader">' + SVG_ICONS.loading + 'Loading ...</h2>';
+		this.setContentHeight();
 		this.maxCommits += this.config.loadMoreCommits;
 		this.saveState();
 		this.requestLoadRepoInfoAndCommits(false, true);
@@ -2004,16 +2007,8 @@ export class GitGraphView {
 	/* Observers */
 
 	private setContentHeight(cdvHeight: number = 0) {
-		// console.log('setContentHeight')
-		// if(!cdvHeight){
-		// 	const cdv=document.getElementById('cdv')
-		// 	if(cdv){
-		// 		cdvHeight=parseInt(cdv.style.height.replace("px",''))
-		// 	}
-		// }
 		const toolbarHeight = document.getElementById('controls')?.offsetHeight || 42;
-		// const footHeight = document.getElementById('footer')?.offsetHeight || 58;
-		const footHeight = 42;
+		const footHeight = this.footerElem.offsetHeight + 6;
 		const content = document.getElementById('content')
 		const height = window.innerHeight - toolbarHeight - footHeight;
 		content!.style.height = height + "px";
@@ -2033,6 +2028,7 @@ export class GitGraphView {
 			this.setContentHeight()
 		}
 		new ResizeObserver(udpateCdvHeight).observe(controls!)
+		new ResizeObserver(udpateCdvHeight).observe(this.footerElem)
 		addEventListener('resize', udpateCdvHeight)
 	}
 
