@@ -1465,7 +1465,8 @@
 			"editor/title": [
 				{
 					"command": "git-graph.viewFileHistory",
-					"group": "navigation@4"
+					"group": "navigation@4",
+					"when": "config.git.enabled && gitOpenRepositoryCount != 0 && resourceScheme == file"
 				},
 				{
 					"command": "git-graph.openFile",
