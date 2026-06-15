@@ -9,9 +9,9 @@
     },
     "tasks": [
         {
-            "label": "webpack-dev",
-            "type": "npm",
-            "script": "dev",
+            "label": "esbuild-dev",
+            "type": "shell",
+            "command": "yarn dev",
             "isBackground": true,
             "group": {
                 "kind": "build",
@@ -30,10 +30,10 @@
                     "background": {
                         "activeOnStart": true,
                         "beginsPattern": {
-                            "regexp": "webpack --progress"
+                            "regexp": "node esbuild.mjs"
                         },
                         "endsPattern": {
-                            "regexp": "compiled successfully"
+                            "regexp": "\\[watch\\] (build finished|watching for changes)"
                         }
                     }
                 }
