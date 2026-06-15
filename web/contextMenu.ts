@@ -1,4 +1,5 @@
 import { findCommitElemWithId } from "./main";
+import { TargetType } from "./targetType";
 import { SVG_ICONS, addListenerToClass, alterClass, alterClassOfCollection, getCommitElems } from "./utils";
 
 export const CLASS_CONTEXT_MENU_ACTIVE = 'contextMenuActive';

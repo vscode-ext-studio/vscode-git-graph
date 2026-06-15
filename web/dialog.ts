@@ -1,4 +1,5 @@
 import { closeDialogAndContextMenu, eventOverlay, findCommitElemWithId } from "./main";
+import { TargetType } from "./targetType";
 import { escapeHtml, alterClass, alterClassOfCollection, getCommitElems, handledEvent, addListenerToCollectionElems, formatCommaSeparatedList, CLASS_FOCUSSED, CLASS_SELECTED, REF_INVALID_REGEX, SVG_ICONS } from "./utils";
 
 const CLASS_DIALOG_ACTIVE = 'dialogActive';

@@ -1,6 +1,7 @@
-import { FindWidgetState } from './findWidget';
-import { SettingsWidgetState } from './settingsWidget';
-import * as GG from './types'; // Import types from back-end (requires `npm run compile-src`)
+import type { FindWidgetState } from './findWidget';
+import type { SettingsWidgetState } from './settingsWidget';
+import type { TargetType } from './targetType';
+import * as GG from './types'; // Import types from back-end (shared via web/types.ts)
 
 declare global {
 
@@ -81,13 +82,6 @@ declare global {
 
 
 	/* Dialog & ContextMenu shared base Target interfaces */
-
-	const enum TargetType {
-		Commit = 'commit',
-		CommitDetailsView = 'cdv',
-		Ref = 'ref',
-		Repo = 'repo'
-	}
 
 	interface CommitOrRefTarget {
 		type: TargetType.Commit | TargetType.Ref | TargetType.CommitDetailsView;

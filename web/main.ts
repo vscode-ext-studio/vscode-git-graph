@@ -7,6 +7,7 @@ import { Graph } from "./graph"
 import { SettingsWidget } from "./settingsWidget"
 import { CLASS_EXTERNAL_URL, CLASS_INTERNAL_URL, generateIssueLinkFromMatch, isExternalUrlElem, isInternalUrlElem, IssueLinking, isUrlElem, parseIssueLinkingConfig, TextFormatter } from "./textFormatter"
 import { alterClass, getRepoName, getSortedRepositoryPaths, showErrorMessage, arraysStrictlyEqual, sendMessage, arraysEqual, getCommitElems, escapeHtml, formatShortDate, formatLongDate, formatCommaSeparatedList, updateGlobalViewState, addListenerToClass, handledEvent, getVSCodeStyle, modifyColourOpacity, unescapeHtml, insertAfter, observeElemScroll, insertBeforeFirstChildWithClass, EventOverlay, getChildUl, CLASS_ACTIVE, CLASS_BRANCH_LABELS_ALIGNED_TO_GRAPH, CLASS_COMMIT_DETAILS_OPEN, CLASS_ENABLED, CLASS_FETCH_SUPPORTED, CLASS_PENDING_REVIEW, CLASS_REFRESHING, CLASS_REF_HEAD, CLASS_REF_REMOTE, CLASS_REF_STASH, CLASS_REF_TAG, CLASS_TAG_LABELS_RIGHT_ALIGNED, COLUMN_AUTO, COLUMN_HIDDEN, COLUMN_LEFT_RIGHT_PADDING, COLUMN_MIN_WIDTH, CSS_PROP_EDITOR_FONT_FAMILY, CSS_PROP_FIND_MATCH_HIGHLIGHT_BACKGROUND, CSS_PROP_FONT_FAMILY, CSS_PROP_LIMIT_GRAPH_WIDTH, CSS_PROP_SELECTION_BACKGROUND, ELLIPSIS, GIT_FILE_CHANGE_TYPES, GIT_SIGNATURE_STATUS_DESCRIPTIONS, SHOW_ALL_BRANCHES, SVG_ICONS, UNCOMMITTED, VSCODE_API, ImageResizer } from "./utils"
+import { TargetType } from "./targetType"
 
 require("./styles/main.css")
 // import  from "./contextMenu"
